@@ -8,10 +8,10 @@ import {
   Heart,
   Award,
   Users,
-  Flame,
   Dessert,
-  Utensils,
   PackageOpenIcon,
+  LeafyGreen,
+  Sandwich,
 } from "lucide-react";
 
 // ---------------------
@@ -27,6 +27,7 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
+  // Dessert
   {
     name: "Soup Buah",
     price: "10K",
@@ -72,6 +73,7 @@ const PRODUCTS: Product[] = [
     tags: ["dessert"],
     badge: "",
   },
+  // Snack
   {
     name: "Salad Wrap",
     price: "35K",
@@ -81,6 +83,7 @@ const PRODUCTS: Product[] = [
     tags: ["snack"],
     badge: "",
   },
+  // Ricebox
   {
     name: "Chicken Salted Egg (Jumbo Only)",
     price: "35K",
@@ -118,6 +121,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
+    // Salad buah
     name: "Salad Buah",
     price: "35K",
     description:
@@ -153,11 +157,11 @@ interface Category {
 }
 
 const CATEGORIES: Category[] = [
-  { id: "all", name: "All", icon: Salad },
+  { id: "all", name: "All", icon: LeafyGreen },
   { id: "dessert", name: "Dessert", icon: Dessert },
-  { id: "snack", name: "Snack", icon: Utensils },
+  { id: "snack", name: "Snack", icon: Sandwich },
   { id: "ricebox", name: "Rice Box", icon: PackageOpenIcon },
-  { id: "saladbuah", name: "Salad Buah", icon: Flame },
+  { id: "saladbuah", name: "Salad Buah", icon: Salad },
 ];
 
 // Object map for badge colors
