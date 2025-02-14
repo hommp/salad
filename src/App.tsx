@@ -262,19 +262,22 @@ function App() {
       </header>
 
       {/* Hero Section */}
-      <section
-        id="home"
-        className="container mx-auto px-6 pt-32 pb-16 text-center relative overflow-hidden"
-      >
-        <div
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1546548970-71785318a17b?auto=format&fit=crop&q=80&w=2000')] opacity-5 bg-cover bg-center"
-          aria-hidden="true"
-        />
-        <div className="relative slide-up">
+      <section id="home" className="relative overflow-hidden">
+        {/* Background image full width */}
+        <div className="absolute inset-0">
+          <img
+            src="salad.jpg"
+            alt="Salad"
+            className="w-full h-full object-cover opacity-5"
+          />
+        </div>
+
+        {/* Konten utama yang terpusat */}
+        <div className="container mx-auto px-6 pt-32 pb-16 text-center relative slide-up">
           <h1 className="text-5xl font-bold text-[#fe6704] mb-6">
-            Salad
+            ONE STOP
             <br />
-            <span className="text-[#9cc90a]">Segar & Sehat </span>
+            <span className="text-[#9cc90a]">HEALTHY FOOD BRAND</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Temukan perpaduan sempurna bahan-bahan segar, dipilih dengan cermat
@@ -366,7 +369,7 @@ function App() {
               </div>
               <div className="relative h-64 rounded-xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&q=80&w=1200"
+                  src="salad.jpg"
                   alt="Fresh fruits"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -436,7 +439,7 @@ function App() {
                     onClick={() =>
                       handleWhatsAppOrder(product.name, product.price)
                     }
-                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full hover:bg-green-600 transition flex items-center space-x-2"
+                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full transition flex items-center space-x-2"
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>Pesan</span>
