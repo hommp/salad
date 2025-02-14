@@ -179,13 +179,14 @@ const getBadgeColor = (badge: string) => badgeColors[badge] || "bg-gray-500";
 // ---------------------
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  // Reset halaman pagination ketika kategori berubah
+  // Reset pagination ketika kategori atau pencarian berubah
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
   // Use IntersectionObserver for animate-on-scroll
   useEffect(() => {
@@ -210,12 +211,19 @@ function App() {
     };
   }, []);
 
-  // Filter produk berdasarkan kategori
+  // Filter produk berdasarkan kategori dan search term
   const filteredProducts = useMemo(() => {
-    return selectedCategory === "all"
-      ? PRODUCTS
-      : PRODUCTS.filter((product) => product.tags.includes(selectedCategory));
-  }, [selectedCategory]);
+    let products =
+      selectedCategory === "all"
+        ? PRODUCTS
+        : PRODUCTS.filter((product) => product.tags.includes(selectedCategory));
+    if (searchTerm.trim() !== "") {
+      products = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return products;
+  }, [selectedCategory, searchTerm]);
 
   // Pagination: tampilkan produk sesuai halaman aktif
   const displayedProducts = filteredProducts.slice(
@@ -245,7 +253,6 @@ function App() {
   }, []);
 
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
@@ -257,6 +264,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+      {/* Header */}
       <header
         className={`fixed w-full top-0 z-50 transition-colors duration-300 ${
           scrolled ? "bg-white shadow-sm" : "bg-transparent"
@@ -442,6 +450,34 @@ function App() {
           })}
         </div>
 
+        {/* Search Input */}
+        <div className="flex justify-center mb-12">
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Cari produk..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-5 py-3 pl-12 border border-gray-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#9cc90a] transition duration-300 ease-in-out"
+            />
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4">
+              <svg
+                className="w-6 h-6 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {displayedProducts.map((product, index) => (
@@ -494,7 +530,7 @@ function App() {
             {currentPage > 1 && (
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
-                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full mr-2"
+                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full mr-2 transition transform hover:scale-105"
               >
                 Prev
               </button>
@@ -503,7 +539,7 @@ function App() {
               Math.ceil(filteredProducts.length / itemsPerPage) && (
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
-                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full"
+                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full transition transform hover:scale-105"
               >
                 Next
               </button>
@@ -516,31 +552,42 @@ function App() {
       <section className="bg-orange-50 py-16">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex items-center space-x-4 bg-white p-6 rounded-2xl shadow-sm transform hover:scale-105 transition animate-on-scroll">
-              <Phone className="h-8 w-8 text-[#9cc90a]" />
-              <div>
-                <h3 className="font-semibold">Hubungi Kami</h3>
-                <p className="text-gray-600">+62 123 456 789</p>
-              </div>
+            {/* Card Hubungi Kami */}
+            <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+              <Phone className="h-10 w-10 text-[#9cc90a] mb-4" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
+                Hubungi Kami
+              </h3>
+              <p className="text-gray-600">+62 123 456 789</p>
             </div>
-            <div className="flex items-center space-x-4 bg-white p-6 rounded-2xl shadow-sm transform hover:scale-105 transition animate-on-scroll">
-              <Clock className="h-8 w-8 text-[#9cc90a]" />
-              <div>
-                <h3 className="font-semibold">Jam Buka</h3>
-                <p className="text-gray-600">09:00 - 21:00</p>
-              </div>
+
+            {/* Card Jam Buka */}
+            <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+              <Clock className="h-10 w-10 text-[#9cc90a] mb-4" />
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Jam Buka</h3>
+              <p className="text-gray-600">09:00 - 21:00</p>
             </div>
-            <div className="flex items-center space-x-4 bg-white p-6 rounded-2xl shadow-sm transform hover:scale-105 transition animate-on-scroll">
-              <MapPin className="h-8 w-8 text-[#9cc90a]" />
-              <div>
-                <h3 className="font-semibold">Lokasi</h3>
-                <p className="text-gray-600 mb-4">
-                  Ponorogo, Jl.Basuki Rahmad No.36 Surodikraman, Ponorogo
-                </p>
-                <p className="text-gray-600">
-                  Jember, Jl. Mastrip No.63 Sumbersari, Jember (Seberang
-                  Fakultas Kedokteran Unej)
-                </p>
+
+            {/* Card Cabang Beroperasi */}
+            <div className="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+              <div className="flex items-center mb-4">
+                <MapPin className="h-10 w-10 text-[#9cc90a] mr-4" />
+                <h3 className="text-xl font-bold text-gray-800">
+                  Cabang Beroperasi
+                </h3>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <p className="text-gray-600">
+                    Ponorogo, Jl. Basuki Rahmad No.36, Surodikraman, Ponorogo
+                  </p>
+                </div>
+                <div className="flex items-start">
+                  <p className="text-gray-600">
+                    Jember, Jl. Mastrip No.63, Sumbersari, Jember (Seberang
+                    Fakultas Kedokteran Unej)
+                  </p>
+                </div>
               </div>
             </div>
           </div>
