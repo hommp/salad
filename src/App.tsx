@@ -549,45 +549,69 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-orange-50 py-16">
+      <section className="bg-gradient-to-b from-white to-orange-50 py-16">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card Hubungi Kami */}
-            <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-              <Phone className="h-10 w-10 text-[#9cc90a] mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Hubungi Kami
-              </h3>
-              <p className="text-gray-600">+62 123 456 789</p>
+            <div className="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 hover:shadow-2xl transition duration-300 ease-in-out">
+              <div className="flex items-center mb-4">
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-[#f0f5e9] mr-4">
+                  <Phone className="h-6 w-6 text-[#9cc90a]" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Hubungi Kami
+                </h3>
+              </div>
+              <div className="space-y-2">
+                <p className="text-gray-600 text-base">+62 123 456 789</p>
+              </div>
             </div>
 
             {/* Card Jam Buka */}
-            <div className="flex flex-col items-center bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
-              <Clock className="h-10 w-10 text-[#9cc90a] mb-4" />
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Jam Buka</h3>
-              <p className="text-gray-600">09:00 - 21:00</p>
+            <div className="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 hover:shadow-2xl transition duration-300 ease-in-out">
+              <div className="flex items-center mb-4">
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-[#f0f5e9] mr-4">
+                  <Clock className="h-6 w-6 text-[#9cc90a]" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  Jam Buka
+                </h3>
+              </div>
+              <div className="space-y-2">
+                <p className="text-gray-600 text-base">09:00 - 21:00</p>
+              </div>
             </div>
 
             {/* Card Cabang Beroperasi */}
-            <div className="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+            <div className="bg-white p-6 rounded-2xl shadow-lg transform hover:scale-105 hover:shadow-2xl transition duration-300 ease-in-out">
               <div className="flex items-center mb-4">
-                <MapPin className="h-10 w-10 text-[#9cc90a] mr-4" />
-                <h3 className="text-xl font-bold text-gray-800">
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-[#f0f5e9] mr-4">
+                  <MapPin className="h-6 w-6 text-[#9cc90a]" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800">
                   Cabang Beroperasi
                 </h3>
               </div>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <p className="text-gray-600">
+              <div className="space-y-2 flex flex-col">
+                <a
+                  href="https://maps.google.com/?q=Ponorogo%2C+Jl.+Basuki+Rahmad+No.36%2C+Surodikraman%2C+Ponorogo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300">
                     Ponorogo, Jl. Basuki Rahmad No.36, Surodikraman, Ponorogo
                   </p>
-                </div>
-                <div className="flex items-start">
-                  <p className="text-gray-600">
+                </a>
+                <a
+                  href="https://maps.google.com/?q=Jember%2C+Jl.+Mastrip+No.63%2C+Sumbersari%2C+Jember"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300">
                     Jember, Jl. Mastrip No.63, Sumbersari, Jember (Seberang
                     Fakultas Kedokteran Unej)
                   </p>
-                </div>
+                </a>
               </div>
             </div>
           </div>
