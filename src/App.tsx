@@ -179,6 +179,13 @@ const getBadgeColor = (badge: string) => badgeColors[badge] || "bg-gray-500";
 // ---------------------
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
+
+  // Reset halaman pagination ketika kategori berubah
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory]);
 
   // Use IntersectionObserver for animate-on-scroll
   useEffect(() => {
@@ -203,14 +210,20 @@ function App() {
     };
   }, []);
 
-  // Memoize filtered products so that filtering only runs when the category changes
+  // Filter produk berdasarkan kategori
   const filteredProducts = useMemo(() => {
     return selectedCategory === "all"
       ? PRODUCTS
       : PRODUCTS.filter((product) => product.tags.includes(selectedCategory));
   }, [selectedCategory]);
 
-  // Memoize callback functions to avoid unnecessary re-renders
+  // Pagination: tampilkan produk sesuai halaman aktif
+  const displayedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Callback untuk order melalui WhatsApp
   const handleWhatsAppOrder = useCallback(
     (productName: string, price: string) => {
       const message = `Hi FreshBowl! I would like to order:\n\n${productName} (Rp ${price})\n\nPlease help me with my order 😊`;
@@ -223,6 +236,7 @@ function App() {
     []
   );
 
+  // Fungsi untuk scroll ke section
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -230,10 +244,24 @@ function App() {
     }
   }, []);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm fixed w-full top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+      <header
+        className={`fixed w-full top-0 z-50 transition-colors duration-300 ${
+          scrolled ? "bg-white shadow-sm" : "bg-transparent"
+        }`}
+      >
         <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <img className="w-14" src="/logo.png" alt="logo" />
@@ -241,19 +269,31 @@ function App() {
           <div className="flex items-center space-x-6">
             <button
               onClick={() => scrollToSection("home")}
-              className="text-gray-600 hover:text-[#9cc90a]"
+              className={`transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-600 hover:text-[#9cc90a]"
+                  : "text-white hover:text-[#9cc90a]"
+              }`}
             >
               Home
             </button>
             <button
               onClick={() => scrollToSection("about")}
-              className="text-gray-600 hover:text-[#9cc90a]"
+              className={`transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-600 hover:text-[#9cc90a]"
+                  : "text-white hover:text-[#9cc90a]"
+              }`}
             >
               About
             </button>
             <button
               onClick={() => scrollToSection("menu")}
-              className="text-gray-600 hover:text-[#9cc90a]"
+              className={`transition-colors duration-300 ${
+                scrolled
+                  ? "text-gray-600 hover:text-[#9cc90a]"
+                  : "text-white hover:text-[#9cc90a]"
+              }`}
             >
               Menu
             </button>
@@ -263,30 +303,28 @@ function App() {
 
       {/* Hero Section */}
       <section id="home" className="relative overflow-hidden">
-        {/* Background image full width */}
         <div className="absolute inset-0">
           <img
             src="salad.jpg"
             alt="Salad"
-            className="w-full h-full object-cover opacity-5"
+            className="w-full h-full object-cover brightness-50"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
-
-        {/* Konten utama yang terpusat */}
-        <div className="container mx-auto px-6 pt-32 pb-16 text-center relative slide-up">
-          <h1 className="text-5xl font-bold text-[#fe6704] mb-6">
+        <div className="relative z-10 container mx-auto px-6 pt-32 pb-16 text-center my-50">
+          <h1 className="text-6xl font-extrabold text-white mb-6 drop-shadow-lg">
             ONE STOP
             <br />
             <span className="text-[#9cc90a]">HEALTHY FOOD BRAND</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-200 mb-10 max-w-2xl mx-auto">
             Temukan perpaduan sempurna bahan-bahan segar, dipilih dengan cermat
             dan disiapkan setiap hari untuk gaya hidup sehat Anda.
           </p>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-6">
             <button
               onClick={() => scrollToSection("menu")}
-              className="bg-[#9cc90a] text-white px-8 py-3 rounded-full transition transform hover:scale-105"
+              className="bg-[#9cc90a] text-white px-8 py-4 rounded-full transition duration-300 hover:scale-105 shadow-lg"
             >
               Pesan Sekarang
             </button>
@@ -294,10 +332,10 @@ function App() {
               href="https://wa.me/6281234567890"
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-[#9cc90a] text-[#9cc90a] px-8 py-3 rounded-full hover:bg-green-50 transition flex items-center space-x-2 transform hover:scale-105"
+              className="flex items-center border-2 border-[#fe6704] text-[#fe6704] px-8 py-4 rounded-full transition duration-300 bg-orange-100 hover:scale-105 shadow-lg"
             >
-              <MessageCircle className="h-5 w-5" />
-              <span>Hubungi kami</span>
+              <MessageCircle className="h-6 w-6 mr-2" />
+              <span>Hubungi Kami</span>
             </a>
           </div>
         </div>
@@ -406,7 +444,7 @@ function App() {
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
+          {displayedProducts.map((product, index) => (
             <div
               key={index}
               className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition transform hover:scale-105 animate-on-scroll"
@@ -449,6 +487,29 @@ function App() {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {filteredProducts.length > itemsPerPage && (
+          <div className="flex justify-center mt-8">
+            {currentPage > 1 && (
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full mr-2"
+              >
+                Prev
+              </button>
+            )}
+            {currentPage <
+              Math.ceil(filteredProducts.length / itemsPerPage) && (
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Contact Section */}
@@ -473,7 +534,13 @@ function App() {
               <MapPin className="h-8 w-8 text-[#9cc90a]" />
               <div>
                 <h3 className="font-semibold">Lokasi</h3>
-                <p className="text-gray-600">Jakarta, Indonesia</p>
+                <p className="text-gray-600 mb-4">
+                  Ponorogo, Jl.Basuki Rahmad No.36 Surodikraman, Ponorogo
+                </p>
+                <p className="text-gray-600">
+                  Jember, Jl. Mastrip No.63 Sumbersari, Jember (Seberang
+                  Fakultas Kedokteran Unej)
+                </p>
               </div>
             </div>
           </div>
