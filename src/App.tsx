@@ -122,7 +122,7 @@ const PRODUCTS: Product[] = [
   },
   {
     // Salad buah
-    name: "Salad Buah",
+    name: "Mini",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -131,7 +131,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Salad Buah",
+    name: "Medium",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -140,13 +140,13 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Salad Buah",
+    name: "Larage",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     image: "/assets/salad/jumbo.jpg",
     tags: ["saladbuah"],
-    badge: "",
+    badge: "Discount 10%",
   },
 ];
 
@@ -165,14 +165,8 @@ const CATEGORIES: Category[] = [
 ];
 
 // Object map for badge colors
-const badgeColors: Record<string, string> = {
-  "Most Popular": "bg-red-500",
-  New: "bg-blue-500",
-  Premium: "bg-purple-500",
-  "Healthy Choice": "bg-green-500",
-};
-
-const getBadgeColor = (badge: string) => badgeColors[badge] || "bg-gray-500";
+const badgeColors: Record<string, string> = {};
+const getBadgeColor = (badge: string) => badgeColors[badge] || "bg-red-500";
 
 // ---------------------
 // Main App Component
@@ -234,10 +228,10 @@ function App() {
   // Callback untuk order melalui WhatsApp
   const handleWhatsAppOrder = useCallback(
     (productName: string, price: string) => {
-      const message = `Hi FreshBowl! I would like to order:\n\n${productName} (Rp ${price})\n\nPlease help me with my order 😊`;
+      const message = `Hai salad 18! Saya ingin memesan:\n\n${productName} (Rp ${price})\n\nTolong bantu saya dengan pesanan saya`;
       const encodedMessage = encodeURIComponent(message);
       window.open(
-        `https://wa.me/6281234567890?text=${encodedMessage}`,
+        `https://wa.me/6288989840119?text=${encodedMessage}`,
         "_blank"
       );
     },
@@ -263,7 +257,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Header */}
       <header
         className={`fixed w-full top-0 z-50 transition-colors duration-300 ${
@@ -549,7 +543,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-gradient-to-b from-white to-orange-50 py-16">
+      <section className="bg-gradient-to-b from-white to-green-50 py-16">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card Hubungi Kami */}
@@ -563,7 +557,8 @@ function App() {
                 </h3>
               </div>
               <div className="space-y-2">
-                <p className="text-gray-600 text-base">+62 123 456 789</p>
+                <p className="text-gray-600 text-base">+62 813 3568 8509</p>
+                <p className="text-gray-600 text-base">+62 821 4241 7242</p>
               </div>
             </div>
 
