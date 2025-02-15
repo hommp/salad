@@ -12,11 +12,10 @@ import {
   PackageOpenIcon,
   LeafyGreen,
   Sandwich,
+  Menu,
+  X,
 } from "lucide-react";
 
-// ---------------------
-// Static Data (moved outside the component)
-// ---------------------
 interface Product {
   name: string;
   price: string;
@@ -27,7 +26,7 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  // Dessert
+  // Contoh produk (sesuaikan dengan data Anda)
   {
     name: "Soup Buah",
     price: "10K",
@@ -85,7 +84,7 @@ const PRODUCTS: Product[] = [
   },
   // Ricebox
   {
-    name: "Chicken Salted Egg (Jumbo Only)",
+    name: "Ricebox Chicken Salted Egg (Jumbo Only)",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -94,7 +93,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Chicken Sambal Matah",
+    name: "Ricebox Chicken Sambal Matah",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -103,7 +102,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Chicken Blackpapper",
+    name: "Ricebox Chicken Blackpapper",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -112,7 +111,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Chicken Curry",
+    name: "Ricebox Chicken Curry",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -122,7 +121,7 @@ const PRODUCTS: Product[] = [
   },
   {
     // Salad buah
-    name: "Mini",
+    name: " Salad Buah Mini",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -131,7 +130,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Medium",
+    name: "Salad Buah Medium",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -140,13 +139,13 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: "Larage",
+    name: " Salad Buah Larage",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     image: "/assets/salad/jumbo.jpg",
     tags: ["saladbuah"],
-    badge: "Discount 10%",
+    badge: "",
   },
 ];
 
@@ -164,28 +163,32 @@ const CATEGORIES: Category[] = [
   { id: "saladbuah", name: "Salad Buah", icon: Salad },
 ];
 
-// Object map for badge colors
 const badgeColors: Record<string, string> = {};
 const getBadgeColor = (badge: string) => badgeColors[badge] || "bg-red-500";
 
-// ---------------------
-// Main App Component
-// ---------------------
 function App() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Reset pagination ketika kategori atau pencarian berubah
+  // Deteksi lebar layar untuk responsivitas
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Atur items per page: 4 untuk mobile (<768px), 6 untuk layar lebih besar
+  const itemsPerPage = windowWidth < 768 ? 4 : 6;
+
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchTerm]);
 
-  // Use IntersectionObserver for animate-on-scroll
   useEffect(() => {
     const elements = document.querySelectorAll(".animate-on-scroll");
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -197,15 +200,12 @@ function App() {
       },
       { threshold: 0.1 }
     );
-
     elements.forEach((el) => observer.observe(el));
-
     return () => {
       elements.forEach((el) => observer.unobserve(el));
     };
   }, []);
 
-  // Filter produk berdasarkan kategori dan search term
   const filteredProducts = useMemo(() => {
     let products =
       selectedCategory === "all"
@@ -219,13 +219,11 @@ function App() {
     return products;
   }, [selectedCategory, searchTerm]);
 
-  // Pagination: tampilkan produk sesuai halaman aktif
   const displayedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Callback untuk order melalui WhatsApp
   const handleWhatsAppOrder = useCallback(
     (productName: string, price: string) => {
       const message = `Hai salad 18! Saya ingin memesan:\n\n${productName} (Rp ${price})\n\nTolong bantu saya dengan pesanan saya`;
@@ -238,7 +236,6 @@ function App() {
     []
   );
 
-  // Fungsi untuk scroll ke section
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -251,7 +248,6 @@ function App() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -268,9 +264,13 @@ function App() {
           <div className="flex items-center space-x-2">
             <img className="w-14" src="/logo.png" alt="logo" />
           </div>
-          <div className="flex items-center space-x-6">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
             <button
-              onClick={() => scrollToSection("home")}
+              onClick={() => {
+                scrollToSection("home");
+                setMobileMenuOpen(false);
+              }}
               className={`transition-colors duration-300 ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
@@ -280,7 +280,10 @@ function App() {
               Home
             </button>
             <button
-              onClick={() => scrollToSection("about")}
+              onClick={() => {
+                scrollToSection("about");
+                setMobileMenuOpen(false);
+              }}
               className={`transition-colors duration-300 ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
@@ -290,7 +293,10 @@ function App() {
               About
             </button>
             <button
-              onClick={() => scrollToSection("menu")}
+              onClick={() => {
+                scrollToSection("menu");
+                setMobileMenuOpen(false);
+              }}
               className={`transition-colors duration-300 ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
@@ -300,8 +306,72 @@ function App() {
               Menu
             </button>
           </div>
+          {/* Mobile Hamburger */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className={`transition-colors duration-300 ${
+                scrolled ? "text-gray-600" : "text-white"
+              }`}
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </nav>
       </header>
+
+      {/* Sidebar Mobile Navigation */}
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="p-4 flex justify-end">
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-gray-600 focus:outline-none"
+          >
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        <nav className="flex flex-col items-center space-y-6 mt-4">
+          <button
+            onClick={() => {
+              scrollToSection("home");
+              setMobileMenuOpen(false);
+            }}
+            className="text-gray-600 hover:text-[#9cc90a]"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => {
+              scrollToSection("about");
+              setMobileMenuOpen(false);
+            }}
+            className="text-gray-600 hover:text-[#9cc90a]"
+          >
+            About
+          </button>
+          <button
+            onClick={() => {
+              scrollToSection("menu");
+              setMobileMenuOpen(false);
+            }}
+            className="text-gray-600 hover:text-[#9cc90a]"
+          >
+            Menu
+          </button>
+        </nav>
+      </div>
+
+      {/* Overlay untuk sidebar */}
+      {mobileMenuOpen && (
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className="fixed inset-0 bg-black opacity-50 z-40"
+        />
+      )}
 
       {/* Hero Section */}
       <section id="home" className="relative overflow-hidden">
@@ -313,20 +383,20 @@ function App() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
-        <div className="relative z-10 container mx-auto px-6 pt-32 pb-16 text-center my-50">
-          <h1 className="text-6xl font-extrabold text-white mb-6 drop-shadow-lg">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 md:pt-32 pb-16 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-lg">
             ONE STOP
             <br />
             <span className="text-[#9cc90a]">HEALTHY FOOD BRAND</span>
           </h1>
-          <p className="text-xl text-gray-200 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto">
             Temukan perpaduan sempurna bahan-bahan segar, dipilih dengan cermat
             dan disiapkan setiap hari untuk gaya hidup sehat Anda.
           </p>
-          <div className="flex justify-center space-x-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button
               onClick={() => scrollToSection("menu")}
-              className="bg-[#9cc90a] text-white px-8 py-4 rounded-full transition duration-300 hover:scale-105 shadow-lg"
+              className="bg-[#9cc90a] text-white px-8 py-3 rounded-full transition duration-300 hover:scale-105 shadow-lg"
             >
               Pesan Sekarang
             </button>
@@ -334,7 +404,7 @@ function App() {
               href="https://wa.me/6281234567890"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center border-2 border-[#fe6704] text-[#fe6704] px-8 py-4 rounded-full transition duration-300 bg-orange-100 hover:scale-105 shadow-lg"
+              className="flex items-center justify-center border-2 border-[#fe6704] text-[#fe6704] px-8 py-3 rounded-full transition duration-300 bg-orange-100 hover:scale-105 shadow-lg"
             >
               <MessageCircle className="h-6 w-6 mr-2" />
               <span>Hubungi Kami</span>
@@ -452,7 +522,7 @@ function App() {
               placeholder="Cari produk..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-5 py-3 pl-12 border border-gray-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#9cc90a] transition duration-300 ease-in-out"
+              className="w-full px-5 py-3 pl-12 border border-gray-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#9cc90a] transition duration-300 ease-in-out text-sm"
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-4">
               <svg
@@ -473,7 +543,7 @@ function App() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {displayedProducts.map((product, index) => (
             <div
               key={index}
@@ -507,7 +577,7 @@ function App() {
                     onClick={() =>
                       handleWhatsAppOrder(product.name, product.price)
                     }
-                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full transition flex items-center space-x-2"
+                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full transition flex items-center space-x-2 text-sm"
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>Pesan</span>
@@ -520,24 +590,26 @@ function App() {
 
         {/* Pagination Controls */}
         {filteredProducts.length > itemsPerPage && (
-          <div className="flex justify-center mt-8">
-            {currentPage > 1 && (
+          <div className="flex justify-center mt-8 space-x-2">
+            {Array.from(
+              { length: Math.ceil(filteredProducts.length / itemsPerPage) },
+              (_, i) => i + 1
+            ).map((page) => (
               <button
-                onClick={() => setCurrentPage(currentPage - 1)}
-                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full mr-2 transition transform hover:scale-105"
+                key={page}
+                onClick={() => {
+                  setCurrentPage(page);
+                  scrollToSection("menu");
+                }}
+                className={`px-3 py-2 rounded-full transition transform hover:scale-105 ${
+                  currentPage === page
+                    ? "underline underline-offset-4 decoration-[#9cc90a] text-[#9cc90a] bg-transparent"
+                    : "bg-white text-gray-600"
+                }`}
               >
-                Prev
+                {page}
               </button>
-            )}
-            {currentPage <
-              Math.ceil(filteredProducts.length / itemsPerPage) && (
-              <button
-                onClick={() => setCurrentPage(currentPage + 1)}
-                className="px-4 py-2 bg-[#9cc90a] text-white rounded-full transition transform hover:scale-105"
-              >
-                Next
-              </button>
-            )}
+            ))}
           </div>
         )}
       </section>
@@ -618,7 +690,7 @@ function App() {
         <div className="container mx-auto px-6 py-8">
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-4">
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 © 2025 Salad 18. All rights reserved.
               </p>
             </div>
