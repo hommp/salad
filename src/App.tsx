@@ -280,7 +280,7 @@ function App() {
                 scrollToSection("home");
                 setMobileMenuOpen(false);
               }}
-              className={`transition-colors duration-300 ${
+              className={`transition-colors duration-300 cursor-pointer ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
                   : "text-white hover:text-[#9cc90a]"
@@ -293,7 +293,7 @@ function App() {
                 scrollToSection("about");
                 setMobileMenuOpen(false);
               }}
-              className={`transition-colors duration-300 ${
+              className={`transition-colors duration-300 cursor-pointer ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
                   : "text-white hover:text-[#9cc90a]"
@@ -306,7 +306,7 @@ function App() {
                 scrollToSection("menu");
                 setMobileMenuOpen(false);
               }}
-              className={`transition-colors duration-300 ${
+              className={`transition-colors duration-300 cursor-pointer ${
                 scrolled
                   ? "text-gray-600 hover:text-[#9cc90a]"
                   : "text-white hover:text-[#9cc90a]"
@@ -323,7 +323,7 @@ function App() {
                 scrolled ? "text-gray-600" : "text-white"
               }`}
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-6 w-6 cursor-pointer" />
             </button>
           </div>
         </nav>
@@ -340,7 +340,7 @@ function App() {
             onClick={() => setMobileMenuOpen(false)}
             className="text-gray-600 focus:outline-none"
           >
-            <X className="h-6 w-6" />
+            <X className="h-6 w-6 cursor-pointer" />
           </button>
         </div>
         <nav className="flex flex-col items-center space-y-6 mt-4">
@@ -349,7 +349,7 @@ function App() {
               scrollToSection("home");
               setMobileMenuOpen(false);
             }}
-            className="text-gray-600 hover:text-[#9cc90a]"
+            className="text-gray-600 hover:text-[#9cc90a] cursor-pointer"
           >
             Home
           </button>
@@ -358,7 +358,7 @@ function App() {
               scrollToSection("about");
               setMobileMenuOpen(false);
             }}
-            className="text-gray-600 hover:text-[#9cc90a]"
+            className="text-gray-600 hover:text-[#9cc90a] cursor-pointer"
           >
             About
           </button>
@@ -367,7 +367,7 @@ function App() {
               scrollToSection("menu");
               setMobileMenuOpen(false);
             }}
-            className="text-gray-600 hover:text-[#9cc90a]"
+            className="text-gray-600 hover:text-[#9cc90a] cursor-pointer"
           >
             Menu
           </button>
@@ -406,7 +406,7 @@ function App() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <button
               onClick={() => scrollToSection("menu")}
-              className="bg-[#9cc90a] text-white px-8 py-3 rounded-full transition duration-300 hover:scale-105 shadow-lg"
+              className="bg-[#9cc90a] text-white px-8 py-3 rounded-full transition duration-300 hover:scale-105 shadow-lg cursor-pointer"
             >
               Pesan Sekarang
             </button>
@@ -511,7 +511,7 @@ function App() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all transform hover:scale-105 ${
+                className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all transform hover:scale-105 cursor-pointer ${
                   selectedCategory === category.id
                     ? "bg-[#9cc90a] text-white shadow-lg scale-105"
                     : "bg-white text-gray-600 hover:bg-green-50 shadow-md"
@@ -587,7 +587,7 @@ function App() {
                     onClick={() =>
                       handleWhatsAppOrder(product.name, product.price)
                     }
-                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full transition flex items-center space-x-2 text-sm"
+                    className="bg-[#9cc90a] text-white px-6 py-2 rounded-full transition flex items-center space-x-2 text-sm cursor-pointer"
                   >
                     <MessageCircle className="h-5 w-5" />
                     <span>Pesan</span>
@@ -611,7 +611,7 @@ function App() {
                   setCurrentPage(page);
                   scrollToSection("menu");
                 }}
-                className={`px-3 py-2 rounded-full transition transform hover:scale-105 ${
+                className={`px-3 py-2 rounded-full transition transform hover:scale-105 cursor-pointer ${
                   currentPage === page
                     ? "underline underline-offset-4 decoration-[#9cc90a] text-[#9cc90a] bg-transparent"
                     : "bg-white text-gray-600"
@@ -638,9 +638,30 @@ function App() {
                   Hubungi Kami
                 </h3>
               </div>
-              <div className="space-y-2">
-                <p className="text-gray-600 text-base">+62 813 3568 8509</p>
-                <p className="text-gray-600 text-base">+62 821 4241 7242</p>
+              <div className="space-y-2 flex flex-col">
+                <p className="text-gray-800 text-base font-semibold">
+                  Ponorogo :
+                </p>
+                <a
+                  href="https://wa.me/6281335688509"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300"
+                >
+                  +62 813 3568 8509
+                </a>
+
+                <p className="text-gray-800 text-base font-semibold">
+                  Jember :
+                </p>
+                <a
+                  href="https://wa.me/6282142417242"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300"
+                >
+                  +62 821 4241 7242
+                </a>
               </div>
             </div>
 
@@ -654,8 +675,26 @@ function App() {
                   Jam Buka
                 </h3>
               </div>
-              <div className="space-y-2">
-                <p className="text-gray-600 text-base">09:00 - 21:00</p>
+              <div className="flex justify-between">
+                <div className="space-y-2 flex flex-col">
+                  <p className="text-gray-800 text-base font-semibold">
+                    Ponorogo :
+                  </p>
+                  <p className="text-gray-600 text-base">
+                    Senin - Sabtu <br /> 09:00 - 21:00
+                  </p>
+                  <p className="text-gray-600 text-base">
+                    Minggu <br /> 09:00 - 17:00
+                  </p>
+                </div>
+                <div className="space-y-2 flex flex-col">
+                  <p className="text-gray-800 text-base font-semibold">
+                    Jember :
+                  </p>
+                  <p className="text-gray-600 text-base">
+                    Senin - Minggu <br /> 09:45 - 21:00
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -676,7 +715,10 @@ function App() {
                   rel="noopener noreferrer"
                 >
                   <p className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300">
-                    Ponorogo, Jl. Basuki Rahmad No.36, Surodikraman, Ponorogo
+                    <span className="text-gray-800 text-base font-semibold">
+                      Ponorogo,
+                    </span>
+                    Jl. Basuki Rahmad No.36, Surodikraman, Ponorogo
                   </p>
                 </a>
                 <a
@@ -685,8 +727,11 @@ function App() {
                   rel="noopener noreferrer"
                 >
                   <p className="text-gray-600 text-base hover:text-[#9cc90a] transition duration-300">
-                    Jember, Jl. Mastrip No.63, Sumbersari, Jember (Seberang
-                    Fakultas Kedokteran Unej)
+                    <span className="text-gray-800 text-base font-semibold">
+                      Jember,
+                    </span>
+                    Jl. Mastrip No.63, Sumbersari, Jember (Seberang Fakultas
+                    Kedokteran Unej)
                   </p>
                 </a>
               </div>
