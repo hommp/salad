@@ -26,7 +26,6 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  // Contoh produk (sesuaikan dengan data Anda)
   {
     name: "Soup Buah",
     price: "10K",
@@ -120,8 +119,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    // Salad buah
-    name: " Salad Buah Mini",
+    name: "Salad Buah Mini",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -139,7 +137,7 @@ const PRODUCTS: Product[] = [
     badge: "",
   },
   {
-    name: " Salad Buah Larage",
+    name: "Salad Buah Larage",
     price: "35K",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -171,6 +169,18 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // State untuk hero image slider
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  // Efek untuk mengganti gambar Hero setiap 5 detik
+  useEffect(() => {
+    const heroInterval = setInterval(() => {
+      setHeroIndex((prevIndex) => (prevIndex + 1) % PRODUCTS.length);
+    }, 5000);
+    return () => clearInterval(heroInterval);
+  }, []);
 
   // Deteksi lebar layar untuk responsivitas
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -243,7 +253,6 @@ function App() {
     }
   }, []);
 
-  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
@@ -377,9 +386,10 @@ function App() {
       <section id="home" className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="salad.jpg"
-            alt="Salad"
-            className="w-full h-full object-cover brightness-50"
+            key={heroIndex} // Membuat React me-*re-render* gambar saat heroIndex berubah
+            src={PRODUCTS[heroIndex].image}
+            alt={PRODUCTS[heroIndex].name}
+            className="w-full h-full object-cover brightness-50 animate-slideUpFade"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
         </div>
